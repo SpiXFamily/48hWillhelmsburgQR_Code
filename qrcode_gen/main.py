@@ -1,17 +1,29 @@
 import pandas as pd
 import qrcode
-from PIL import Image
-df = pd.read_excel('data.xlsx', sheet_name='Sheet1', usecols=['Straße', 'Hausnummer'])
+df = pd.read_excel('data.xls') 
+"""
+Description:
+This Programm shall collect the colums of the rows of street and house number from a .xls file.
+The columns of the each rows shall concatinated with eachother to a string. 
+The string has to be aligned to a map application link where people can scan the code and see the location on the map application.
 
-
-
-
+"""
 for index, row in df.iterrows():
-    street = row['Straße']
+    # find the rows of street and house number
     house_number = row['Hausnummer']
+    street = row['Strasse' or 'Straße']
+    # TODO concat street with house_number
+    url = str(house_number) + street
+    # Map link
+    maps_url = 'https://google.com/maps/'
+    # QR Code generating
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
-    qr.add_data(f"{Straße} {Hausnummer}")
+    qr.add_data(f"maps_url + url") 
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
     img.save(f"qrcode_{index}.png")
+
+
+
+
 
