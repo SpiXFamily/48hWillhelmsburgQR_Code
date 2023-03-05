@@ -11,19 +11,15 @@ The string has to be aligned to a map application link where people can scan the
 for index, row in df.iterrows():
     # find the rows of street and house number
     house_number = row['Hausnummer']
+    #house_number_str = str(house_number)
     street = row['Strasse' or 'Straße']
     # TODO concat street with house_number
-    url = str(house_number) + street
+    url = str(street) + str(house_number)
     # Map link
-    maps_url = 'https://google.com/maps/'
+    maps_url = 'https://google.com/maps/place/'
     # QR Code generating
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
-    qr.add_data(f"maps_url + url") 
+    qr.add_data(f"{maps_url}{url}") 
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
-    img.save(f"qrcode_{index}.png")
-
-
-
-
-
+    img.save(f"codes/qrcode_{index}.png")
