@@ -1,3 +1,6 @@
+#Python pkgs
 pandas
 xlrd
 qrcode
+
+
