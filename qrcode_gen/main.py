@@ -17,7 +17,7 @@ for index, row in df.iterrows():
     int_plz = int(plz)
     # TODO concat street with house_number
     url = str(street) + str(house_number)
-    # Map link
+    # Map links
     ext_url = f"{str(street)}+{str(house_number)},+{str(int_plz)}+Hamburg"
     maps_url = 'https://google.com/maps/place/'
     # QR Code generating
@@ -26,3 +26,6 @@ for index, row in df.iterrows():
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
     img.save(f"codes/qrcode_{index}.png")
+
+
+
