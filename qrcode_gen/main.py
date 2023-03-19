@@ -26,6 +26,6 @@ for index, row in df.iterrows():
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
     img.save(f"codes/qrcode_{index}.png")
-
+    print(f"{maps_url}{ext_url}")
 
 
