@@ -19,7 +19,7 @@ for index, row in df.iterrows():
     url = str(street) + str(house_number)
     # Map links
     ext_url = f"{str(street)}+{str(house_number)},+{str(int_plz)}+Hamburg"
-    maps_url = 'https://google.com/maps/place/'
+    maps_url = 'https://www.google.com/maps/dir//'
     # QR Code generating
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
     qr.add_data(f"{maps_url}{ext_url}") 
