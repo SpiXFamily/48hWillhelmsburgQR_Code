@@ -70,12 +70,10 @@ class App:
             ext_url = f"{str(street)}+{str(house_number)}+Hamburg&travelmode=walking"
             maps_url = 'https://www.google.com/maps/dir/?api=1&hl=de&destination='
             long_url = str(maps_url)+ (str(ext_url))
-                   # Create an instance of the pyshorteners.Shortener class with a bitly API key (((BITLY API HAS A MONTHLY LIMIT, CUT BECAUSE OF MONEY ISSUES)))
+            ## Create an instance of the pyshorteners.Shortener class with a bitly API key (((BITLY API HAS A MONTHLY LIMIT, CUT BECAUSE OF MONEY ISSUES)))
             #s = pyshorteners.Shortener(api_key='50c22e4e8b074dd72382e7411c4293e5fbdb2fd6')
-
-                    # Shorten the URL using the Bitly API
+            #Shorten the URL using the Bitly API
             #short_url = s.bitly.short(long_url)
-
                     # Print the shortened URL FOR TESTING PURPOSES
             #print(short_url)
 
