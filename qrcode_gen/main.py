@@ -3,16 +3,27 @@ from tkinter import filedialog
 import pandas as pd
 import qrcode
 from PIL import Image
+import openpyxl
+import pyshorteners
+
+
+"""
+Description:
+This Programm shall collect the colums of the rows of street and house number from a .xls file.
+The columns of the each rows shall be combined with eachother to a string. 
+The string has to be aligned to a map application link where people can scan the code and see the location on the map application.
+
+"""
 
 class App:
     def __init__(self, master):
         self.master = master
         master.title("QR Code Generator")
 
-        self.load_button = tk.Button(master, text="Load Data", command=self.load_data)
-        self.load_button.pack()
+        self.file_button = tk.Button(master, text="Wähle eine (Excel) Datei aus", command=self.load_data)
+        self.file_button.pack()
 
-        self.generate_button = tk.Button(master, text="Generate QR Codes", command=self.generate_qr_codes)
+        self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes)
         self.generate_button.pack()
 
     def load_data(self):
@@ -20,7 +31,7 @@ class App:
         file_path = filedialog.askopenfilename()
         
         # Load the data into a Pandas DataFrame
-        self.df = pd.read_excel(file_path)
+        self.df = pd.read_excel(file_path, engine='openpyxl')
 
     def generate_qr_codes(self):
         # Iterate over the rows in the DataFrame and generate a QR code for each row
@@ -40,18 +51,29 @@ class App:
             else:
                 street = row['Strasse' or 'Straße']
 
-            url = str(street) + str(house_number)
             ext_url = f"{str(street)}+{str(house_number)}+Hamburg&travelmode=walking"
             maps_url = 'https://www.google.com/maps/dir/?api=1&hl=de&destination='
+            long_url = str(maps_url)+ (str(ext_url))
+                   # Create an instance of the pyshorteners.Shortener class with a bitly API key (((BITLY API HAS A MONTHLY LIMIT, CUT BECAUSE OF MONEY ISSUES)))
+            #s = pyshorteners.Shortener(api_key='50c22e4e8b074dd72382e7411c4293e5fbdb2fd6')
 
+                    # Shorten the URL using the Bitly API
+            #short_url = s.bitly.short(long_url)
+
+                    # Print the shortened URL FOR TESTING PURPOSES
+            #print(short_url)
+
+                     # QR Code generating
+                    #get an image in the middle of the generated qrcodes
             qr = qrcode.QRCode(version=1, box_size=10, border=5)
-            qr.add_data(f"{maps_url}{ext_url}") 
+            qr.add_data(long_url) 
             qr.make(fit=True)
             img = qr.make_image(fill_color="black", back_color="white")
             img.save(f"codes/qrcode_{index+1}_{musik}.png")
-            print(f"{maps_url}{ext_url}")
-
+            print(long_url)
+                #open the generated qr code
             im = Image.open(f"codes/qrcode_{index+1}_{musik}.png")
+                #convert the logo into a format that makes it readable
             im = im.convert("RGBA")
 
             logo = Image.open('48Logo.png')
@@ -60,7 +82,7 @@ class App:
             im_width, im_height = im.size
             logo_width, logo_height = logo.size
 
-            max_size = (im_width * 0.40, im_height * 0.40)
+            max_size = (im_width * 0.30, im_height * 0.30)
             logo.thumbnail(max_size)
 
             box_left = (im_width - logo.size[0]) // 2
