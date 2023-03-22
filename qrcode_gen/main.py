@@ -3,7 +3,8 @@ from tkinter import filedialog
 import pandas as pd
 import qrcode
 from PIL import Image
-import openpyxl
+import xlrd
+from openpyxl import load_workbook
 import pyshorteners
 
 
@@ -23,15 +24,30 @@ class App:
         self.file_button = tk.Button(master, text="Wähle eine (Excel) Datei aus", command=self.load_data)
         self.file_button.pack()
 
-        self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes)
+        self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes, state=tk.DISABLED)
         self.generate_button.pack()
 
     def load_data(self):
         # Open a file dialog to select the Excel file
         file_path = filedialog.askopenfilename()
+        if file_path.endswith('.xlsx'):
+            try:
+            # Use openpyxl engine to read .xlsx files
+                self.df = pd.read_excel(file_path, engine='openpyxl')
+                self.generate_button.config(state=tk.NORMAL)
+            except:
+                print('Failed to read the file using openpyxl engine')
+        elif file_path.endswith('.xls'):
+            
+            try:
+                self.df = pd.read_excel(file_path, engine='xlrd')
+                self.generate_button.config(state=tk.NORMAL)
+            except:
+                print('Failed to read the file using xlrd engine')
+        else:
+            print('Unsupported file format')
+                # Make the Generate Button usable if this function completes
         
-        # Load the data into a Pandas DataFrame
-        self.df = pd.read_excel(file_path, engine='openpyxl')
 
     def generate_qr_codes(self):
         # Iterate over the rows in the DataFrame and generate a QR code for each row
