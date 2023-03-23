@@ -64,7 +64,7 @@ class App:
     def generate_qr_codes(self):
             # Iterate over the rows in the DataFrame and generate a QR code for each row
         for index, row in self.df.iterrows():
-            #check if the whole row is empty and break the sequence
+            #check if the whole row is empty with regex and break the sequence
             if pd.isnull(row['Strasse' or 'Straße']) and pd.isnull(row['Musik']) and pd.isnull(row['Hausnummer']) and pd.isnull(row['Ort']) == True:
                 print("Every QR-Code has been successfully generated?")
                 break
@@ -107,7 +107,7 @@ class App:
                 #convert the logo into a format that makes it readable
             im = im.convert("RGBA")
 
-            logo = Image.open('48Logo.png')
+            logo = Image.open('48hLogoTransparent.png')
             logo = logo.convert(im.mode)
 
             im_width, im_height = im.size
