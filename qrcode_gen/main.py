@@ -6,12 +6,12 @@ from PIL import Image
 import xlrd
 from openpyxl import load_workbook
 import pyshorteners
-
+import re
 
 """
 Description:
 This Programm shall collect the colums of the rows of street and house number from a .xls file.
-The columns of the each rows shall be combined with eachother to a string. 
+The columns of the each rows shall be combined with eachother to a string.
 The string has to be aligned to a map application link where people can scan the code and see the location on the map application.
 
 """
@@ -20,40 +20,56 @@ class App:
     def __init__(self, master):
         self.master = master
         master.title("QR Code Generator")
-
+            #generate the "Select excel file Button"
         self.file_button = tk.Button(master, text="Wähle eine (Excel) Datei aus", command=self.load_data)
         self.file_button.pack()
-
+            #generate the "Generate qrcodes Button" and disable it
         self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes, state=tk.DISABLED)
         self.generate_button.pack()
 
     def load_data(self):
-        # Open a file dialog to select the Excel file
+            # Open a file dialog to select the Excel file
         file_path = filedialog.askopenfilename()
         if file_path.endswith('.xlsx'):
             try:
             # Use openpyxl engine to read .xlsx files
                 self.df = pd.read_excel(file_path, engine='openpyxl')
+                # Make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
             except:
-                print('Failed to read the file using openpyxl engine')
+                print('Failed to read the xlsx file')
         elif file_path.endswith('.xls'):
-            
+
             try:
+            # Use xlrd engine to read .xls files
                 self.df = pd.read_excel(file_path, engine='xlrd')
+                # Make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
             except:
-                print('Failed to read the file using xlrd engine')
+                print('Failed to read the xls file')
+        elif file_path.endswith('.xltx'):
+
+            try:
+            # Use xlrd engine to read .xltx files
+                self.df = pd.read_excel(file_path, engine='openpyxl')
+                # Make the Generate Button usable if this function completes
+                self.generate_button.config(state=tk.NORMAL)
+            except:
+                print('Failed to read the xltx file')
         else:
             print('Unsupported file format')
-                # Make the Generate Button usable if this function completes
-        
+
+
 
     def generate_qr_codes(self):
-        # Iterate over the rows in the DataFrame and generate a QR code for each row
+            # Iterate over the rows in the DataFrame and generate a QR code for each row
         for index, row in self.df.iterrows():
+            #check if the whole row is empty and break the sequence
+            if pd.isnull(row['Strasse' or 'Straße']) and pd.isnull(row['Musik']) and pd.isnull(row['Hausnummer']) and pd.isnull(row['Ort']) == True:
+                print("Every QR-Code has been successfully generated?")
+                break
             musik = row['Musik']
-            musik = str(musik).replace("/", "")
+            musik = re.sub('[^a-zA-Z0-9\n\.]', '', musik)
 
             #check if the house number in the excel file is empty. if it is empty, use an empty string to avoid "nan" as nan will destroy googles search mode
             if pd.isnull(row['Hausnummer']) == True:
@@ -80,10 +96,11 @@ class App:
                      # QR Code generating
                     #get an image in the middle of the generated qrcodes
             qr = qrcode.QRCode(version=1, box_size=10, border=5)
-            qr.add_data(long_url) 
+            qr.add_data(long_url)
             qr.make(fit=True)
             img = qr.make_image(fill_color="black", back_color="white")
             img.save(f"codes/qrcode_{index+1}_{musik}.png")
+            print(musik)
             print(long_url)
                 #open the generated qr code
             im = Image.open(f"codes/qrcode_{index+1}_{musik}.png")
