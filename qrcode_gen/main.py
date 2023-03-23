@@ -1,12 +1,13 @@
 import tkinter as tk
-from tkinter import filedialog
 import pandas as pd
 import qrcode
-from PIL import Image
+from tkinter import Label, filedialog
+from PIL import Image, ImageTk
 import xlrd
 from openpyxl import load_workbook
 import pyshorteners
 import re
+import os
 
 """
 Description:
@@ -15,11 +16,12 @@ The columns of the each rows shall be combined with eachother to a string.
 The string has to be aligned to a map application link where people can scan the code and see the location on the map application.
 
 """
-
+counter = 0
 class App:
     def __init__(self, master):
         self.master = master
         master.title("QR Code Generator")
+        master.geometry("800x600")
             #generate the "Select excel file Button"
         self.file_button = tk.Button(master, text="Wähle eine (Excel) Datei aus", command=self.load_data)
         self.file_button.pack()
@@ -27,9 +29,15 @@ class App:
         self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes, state=tk.DISABLED)
         self.generate_button.pack()
 
+        self.explorer_button = tk.Button(master, text="Öffne den Ordner mit den QR-Codes", command=self.open_explorer, state=tk.DISABLED)
+        self.explorer_button.pack()
+
+    def open_explorer(self):
+        directory = filedialog.askopenfilename(initialdir="./logocodes")
+
     def load_data(self):
             # Open a file dialog to select the Excel file
-        file_path = filedialog.askopenfilename()
+        file_path = filedialog.askopenfilename(initialdir="./")
         if file_path.endswith('.xlsx'):
             try:
             # Use openpyxl engine to read .xlsx files
@@ -60,24 +68,32 @@ class App:
             print('Unsupported file format')
 
 
-
     def generate_qr_codes(self):
-            # Iterate over the rows in the DataFrame and generate a QR code for each row
+        global counter
+                #Iterate over the rows in the DataFrame and generate a QR code for each row
         for index, row in self.df.iterrows():
-            #check if the whole row is empty with regex and break the sequence
+
+                #check if the whole row is empty with regex and break the sequence
             if pd.isnull(row['Strasse' or 'Straße']) and pd.isnull(row['Musik']) and pd.isnull(row['Hausnummer']) and pd.isnull(row['Ort']) == True:
                 print("Every QR-Code has been successfully generated?")
+                label1 = Label(root, text=str(counter) + " QR-Codes wurden erfolgreich generiert!")
+                label1.pack(side="top")
+                counter = 0
+                self.explorer_button.config(state=tk.NORMAL)
                 break
+                #count the amount of times the sequence has been run through to display the amount of qr-codes generated
+
+            counter = counter +1
             musik = row['Musik']
             musik = re.sub('[^a-zA-Z0-9\n\.]', '', musik)
 
-            #check if the house number in the excel file is empty. if it is empty, use an empty string to avoid "nan" as nan will destroy googles search mode
+                #check if the house number in the excel file is empty. if it is empty, use an empty string to avoid "nan" as nan will destroy googles search mode
             if pd.isnull(row['Hausnummer']) == True:
                 house_number = ""
             else:
                 house_number = row['Hausnummer']
 
-            #check if the street in the excel file is empty. If it is empty, use the Location Name of musical event.
+                #check if the street in the excel file is empty. If it is empty, use the Location Name of musical event.
             if pd.isnull(row['Strasse' or 'Straße']) == True:
                 street = row ['Ort']
             else:
@@ -130,6 +146,14 @@ class App:
             im.paste(im_crop, box)
 
             im.save(f"logocodes/qrcode_logo_{index+1}_{musik}.png")
+
+                #show the qrcodes on the bottom of the Ui for a cool effect
+            image = Image.open (f"logocodes/qrcode_logo_{index+1}_{musik}.png")
+            photo = ImageTk.PhotoImage(image)
+            label = Label(root, image=photo)
+            label.pack(side="bottom")
+            root.update()
+            label.destroy()
 
 root = tk.Tk()
 app = App(root)
