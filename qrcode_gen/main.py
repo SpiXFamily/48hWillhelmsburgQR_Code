@@ -36,13 +36,12 @@ class App:
         self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes, state=tk.DISABLED)
         self.generate_button.pack(side="top",anchor="n")
 
-        # self.correct_file = tk.Label(root, text="Richtige Datei ausgewählt!")
-        # self.correct_file.pack_forget()
+        self.correct_file = tk.Label(root, text="Richtige Datei ausgewählt!")
 
 
 
-        # self.incorrect_file = tk.Label(root, text="Falsche Datei ausgewählt :/ bitte wähle eine .xls .xlsx oder .xltx Datei!")
-        # self.incorrect_file.pack_forget()
+        self.incorrect_file = tk.Label(root, text="Falsche Datei ausgewählt :/ bitte wähle eine .xls .xlsx oder .xltx Datei!")
+
 
 
 
@@ -60,32 +59,43 @@ class App:
         file_path = filedialog.askopenfilename(initialdir="./")
         if file_path.endswith('.xlsx'):
             try:
-            # Use openpyxl engine to read .xlsx files
+                    # Use openpyxl engine to read .xlsx files
                 self.df = pd.read_excel(file_path, engine='openpyxl')
-                # Make the Generate Button usable if this function completes
+                    # Make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
+                    #forget a wrong label and show the correct one
+                self.incorrect_file.pack_forget()
+                self.correct_file.pack(side="top", anchor="n")
             except:
                 print('Failed to read the xlsx file')
         elif file_path.endswith('.xls'):
             try:
-                # Use xlrd engine to read .xls files
+                    # Use xlrd engine to read .xls files
                 self.df = pd.read_excel(file_path, engine='xlrd')
-                # Make the Generate Button usable if this function completes
+                    # Make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
+                    #forget a wrong label and show the correct one
+                self.incorrect_file.pack_forget()
+                self.correct_file.pack(side="top", anchor="n")
             except:
                 print('Failed to read the xls file')
         elif file_path.endswith('.xltx'):
 
             try:
-            # Use xlrd engine to read .xltx files
+                    # Use xlrd engine to read .xltx files
                 self.df = pd.read_excel(file_path, engine='openpyxl')
-                # Make the Generate Button usable if this function completes
+                    # Make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
+                    #forget a wrong label and show the correct one
+                self.incorrect_file.pack_forget()
+                self.correct_file.pack(side="top", anchor="n")
             except:
                 print('Failed to read the xltx file')
         else:
             print('Unsupported file format')
-
+                #forget a wrong label and show the correct one
+            self.correct_file.pack_forget()
+            self.incorrect_file.pack(side="top", anchor="n")
 
     def generate_qr_codes(self):
         global counter
