@@ -203,11 +203,12 @@ class App:
             im.paste(im_crop, box)
             street2 = "/" + str(street)
             print(street2)
-            im.save(f"logocodes/qrcode_logo_{index+1}_{musik}.png")
+            im.save(f"logocodes/byname/qrcode_logo_{index+1}_{musik}.png")
+            im.save(f"logocodes/bylocation/location_{street}{house_number}.png")
             # im.save(f"logocodes_sorted{street2}_{index+1}_{musik}.png")
 
                 #show the qrcodes on the bottom of the Ui for a cool effect
-            image = Image.open (f"logocodes/qrcode_logo_{index+1}_{musik}.png")
+            image = Image.open (f"logocodes/byname/qrcode_logo_{index+1}_{musik}.png")
             photo = ImageTk.PhotoImage(image)
             label = Label(root, image=photo)
             label.pack(side="bottom")
