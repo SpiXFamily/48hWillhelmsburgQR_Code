@@ -1,13 +1,13 @@
 import tkinter as tk
 import pandas as pd
 import qrcode
-from tkinter import Label, filedialog
+from tkinter import Label, filedialog, BooleanVar
 from PIL import Image, ImageTk
 import xlrd
 from openpyxl import load_workbook
 import pyshorteners
 import re
-import os
+
 
 """
 Description:
@@ -21,16 +21,36 @@ class App:
     def __init__(self, master):
         self.master = master
         master.title("QR Code Generator")
-        master.geometry("800x600")
-            #generate the "Select excel file Button"
-        self.file_button = tk.Button(master, text="Wähle eine (Excel) Datei aus", command=self.load_data)
-        self.file_button.pack()
-            #generate the "Generate qrcodes Button" and disable it
-        self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes, state=tk.DISABLED)
-        self.generate_button.pack()
+        master.geometry("900x600")
+
+        self.kill_button = tk.Button(master, text="Schließe die App", command=master.destroy)
+        self.kill_button.pack(side="left", anchor="nw", fill=tk.X)
 
         self.explorer_button = tk.Button(master, text="Öffne den Ordner mit den QR-Codes", command=self.open_explorer, state=tk.DISABLED)
-        self.explorer_button.pack()
+        self.explorer_button.pack(side="right", anchor="ne")
+
+            #generate the "Select excel file Button"
+        self.file_button = tk.Button(master, text="Wähle eine (Excel) Datei aus", command=self.load_data)
+        self.file_button.pack(side="top",anchor="n",padx=200)
+            #generate the "Generate qrcodes Button" and disable it
+        self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes, state=tk.DISABLED)
+        self.generate_button.pack(side="top",anchor="n")
+
+        # self.correct_file = tk.Label(root, text="Richtige Datei ausgewählt!")
+        # self.correct_file.pack_forget()
+
+
+
+        # self.incorrect_file = tk.Label(root, text="Falsche Datei ausgewählt :/ bitte wähle eine .xls .xlsx oder .xltx Datei!")
+        # self.incorrect_file.pack_forget()
+
+
+
+    # def toggle_label(self, label):
+    #     if label.winfo_ismapped():
+    #         label.pack_forget()
+    #     else:
+    #         label.pack(side="top", anchor="n")
 
     def open_explorer(self):
         directory = filedialog.askopenfilename(initialdir="./logocodes")
@@ -47,9 +67,8 @@ class App:
             except:
                 print('Failed to read the xlsx file')
         elif file_path.endswith('.xls'):
-
             try:
-            # Use xlrd engine to read .xls files
+                # Use xlrd engine to read .xls files
                 self.df = pd.read_excel(file_path, engine='xlrd')
                 # Make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
