@@ -1,14 +1,16 @@
-# A Project for the 48h Music Festival in Willhelmsburg
+# A QR Code Generator for the 48h Music Festival in Willhelmsburg
 
-## Information 
+## Introduction: Information to the festival
+The Music festival 48 hours Willhelmsburgs starts ones a year. 
+Everyone can come there for free to listen or making music on the street.
+There are variaties of music availeble.
 
-- This festival starts ones a year. 
-- Everyone can come there for free.
-- Plenty variaties of music genres are there.
-- You can also make your own music there if you like to
+## Main: QR Code Generator for Excel files
+This is a Python written GUI application which transfers Excelfiles (.xls .xlsx and xltx).
+The appication is collecting information from streets and places from Hamburg (Germany) such as postcode and steet number. 
 
 ### Weblinks
--- https://48h.mvde.de/
+- [Infos of the music event] {https://48h.mvde.de/}
 
 
 
