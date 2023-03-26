@@ -163,7 +163,7 @@ class App:
             else:
                 house_number = row['Hausnummer']
 
-                # check if the street in the excel file is empty. If it is empty, use the Location Name of musical event.
+            # check if the street in the excel file is empty. If it is empty, use the Location Name of musical event.
             if pd.isnull(row['Strasse' or 'Straße']) == True:
                 street = row ['Ort']
             else:
