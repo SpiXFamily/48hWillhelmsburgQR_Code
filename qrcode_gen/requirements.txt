@@ -1,13 +1,7 @@
-#Python pkgs
-import tkinter as tk
-from tkinter import filedialog
-import pandas as pd
-import qrcode
-from PIL import Image
-import xlrd
-from openpyxl import load_workbook
-import pyshorteners
-import re
-
-
-pip install tkinster,pandas, qrcode, pillow, xlrd, openpyxl, pyshorteners
+tkinster
+pandas
+qrcode
+pillow
+xlrd
+openpyxl
+pyshorteners
