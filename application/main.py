@@ -6,17 +6,16 @@ from tkinter import Label, filedialog, BooleanVar
 from PIL import Image, ImageTk
 import xlrd
 from openpyxl import load_workbook
-#import pyshorteners
 import re
-#import requests
-
+import requests
+# For optimizing QR_Code size
+#import pyshorteners
 
 """
 Description:
 This Programm shall collect the colums of the rows of street and house number from a .xls file.
 The columns of the each rows shall be combined with eachother to a string.
 The string has to be aligned to a map application link where people can scan the code and see the location on the map application.
-
 """
 # create folder if not exists
 folder_path = "logocodes"
@@ -30,6 +29,7 @@ os.makedirs(subfolder_path, exist_ok=True)
 subfolder_path = os.path.join(folder_path, "bylocation")
 os.makedirs(subfolder_path, exist_ok=True)
 
+# Applation user interface
 counter = 0
 class App:
     def __init__(self, master):
@@ -37,45 +37,45 @@ class App:
         master.title("QR Code Generator")
         master.geometry("900x600")
 
-            # create a button to exit the app
+        # create a button to exit the app
         self.kill_button = tk.Button(master, text="Schließe die App", command=master.destroy)
         self.kill_button.pack(side="left", anchor="nw", fill=tk.X)
 
-            # create a button to open the folder with the generated qr-codes
+        # create a button to open the folder with the generated qr-codes
         self.explorer_button = tk.Button(master, text="Öffne den Ordner mit den QR-Codes", command=self.open_explorer, state=tk.DISABLED)
         self.explorer_button.pack(side="right", anchor="ne")
 
-            # generate the "Select excel file Button"
+        # generate the "Select excel file Button"
         self.file_button = tk.Button(master, text="Wähle eine (Excel) Datei aus", command=self.load_data)
         self.file_button.pack(side="top",anchor="n",padx=200)
 
-            # generate the "Generate qrcodes Button" and disable it
+        # generate the "Generate qrcodes Button" and disable it
         self.generate_button = tk.Button(master, text="Generiere QR Codes", command=self.generate_qr_codes, state=tk.DISABLED)
         self.generate_button.pack(side="bottom",anchor="s")
 
-            # label for the generate button
+        # label for the generate button
         self.generate_label = tk.Label(master, text="Bitte zuerst eine Datei auswählen")
         self.generate_label.pack(side="bottom",anchor="s")
 
-            # label for the size slider
+        # label for the size slider
         self.label_size_slider = tk.Label(master, text="Wähle die QR-Code Größe. 10 ist Standard.")
         self.label_size_slider.pack(side="top", anchor="n")
 
-            # create a slider for the qrcode size
+        # create a slider for the qrcode size
         self.size_slider = tk.Scale(master, from_=1, to=20, orient='horizontal')
         self.size_slider.pack(side="top",anchor="n")
         self.size_slider.set(10)
 
-            # label for the border slider
+        # label for the border slider
         self.label_border_slider = tk.Label(master, text="Wähle die QR-Code Randgröße. 5 ist Standard.")
         self.label_border_slider.pack(side="top", anchor="n")
 
-            # create a slider for the qrcode border size
+        # create a slider for the qrcode border size
         self.border_slider = tk.Scale(master, from_=1, to=10, orient='horizontal')
         self.border_slider.pack(side="top",anchor="n")
         self.border_slider.set(5)
 
-            # create labels for User feedback
+        # create labels for User feedback
         self.correct_file = tk.Label(master, text="Richtige Datei ausgewählt!")
         self.incorrect_file = tk.Label(master, text="Falsche Datei ausgewählt :/ bitte wähle eine .xls .xlsx oder .xltx Datei!")
         self.number_qrcodes = tk.Label(master)
@@ -89,11 +89,11 @@ class App:
 
         if file_path.endswith('.xlsx'):
             try:
-                    # Use openpyxl engine to read .xlsx files
+                # Use openpyxl engine to read .xlsx files
                 self.df = pd.read_excel(file_path, engine='openpyxl')
-                    # Make the Generate Button usable if this function completes
+                # Make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
-                    #forget a wrong label and show the correct one
+                #forget a wrong label and show the correct one
                 self.incorrect_file.pack_forget()
                 self.generate_label.pack_forget()
                 self.correct_file.pack(side="bottom", anchor="s")
@@ -103,11 +103,11 @@ class App:
 
         elif file_path.endswith('.xls'):
             try:
-                    # Use xlrd engine to read .xls files
+                # Use xlrd engine to read .xls files
                 self.df = pd.read_excel(file_path, engine='xlrd')
-                    # Make the Generate Button usable if this function completes
+                # Make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
-                    #forget a wrong label and show the correct one
+                #forget a wrong label and show the correct one
                 self.incorrect_file.pack_forget()
                 self.generate_label.pack_forget()
                 self.correct_file.pack(side="bottom", anchor="s")
@@ -117,11 +117,11 @@ class App:
         elif file_path.endswith('.xltx'):
 
             try:
-                    # Use xlrd engine to read .xltx files
+                # use xlrd engine to read .xltx files
                 self.df = pd.read_excel(file_path, engine='openpyxl')
-                    # Make the Generate Button usable if this function completes
+                # make the Generate Button usable if this function completes
                 self.generate_button.config(state=tk.NORMAL)
-                    #forget a wrong label and show the correct one
+                # forget a wrong label and show the correct one
                 self.generate_label.pack_forget()
                 self.incorrect_file.pack_forget()
                 self.correct_file.pack(side="bottom", anchor="s")
@@ -130,7 +130,7 @@ class App:
 
         else:
             print('Unsupported file format')
-                #forget a wrong label and show the correct one
+            # forget a wrong label and show the correct one
             self.generate_button.config(state=tk.DISABLED)
             self.generate_label.pack_forget()
             self.correct_file.pack_forget()
@@ -140,10 +140,10 @@ class App:
     def generate_qr_codes(self):
         global counter
         global size_slider
-                # Iterate over the rows in the DataFrame and generate a QR code for each row
+        # Iterate over the rows in the DataFrame and generate a QR code for each row
         for index, row in self.df.iterrows():
 
-                # check if the whole row is empty with regex and break the sequence
+            # check if the whole row is empty with regex and break the sequence
             if pd.isnull(row['Strasse' or 'Straße']) and pd.isnull(row['Musik']) and pd.isnull(row['Hausnummer']) and pd.isnull(row['Ort']) == True:
                 print("Every QR-Code has been successfully generated?")
                 self.number_qrcodes.pack_forget()
@@ -152,13 +152,12 @@ class App:
                 counter = 0
                 self.explorer_button.config(state=tk.NORMAL)
                 break
-                # count the amount of times the sequence has been run through to display the amount of qr-codes generated
-
+            # count the amount of times the sequence has been run through to display the amount of qr-codes generated
             counter = counter +1
             musik = row['Musik']
             musik = re.sub('[^a-zA-Z0-9\n\.]', '', musik)
 
-                # check if the house number in the excel file is empty. if it is empty, use an empty string to avoid "nan" as nan will destroy googles search mode
+            # check if the house number in the excel file is empty. if it is empty, use an empty string to avoid "nan" as nan will destroy googles search mode
             if pd.isnull(row['Hausnummer']) == True:
                 house_number = ""
             else:
@@ -179,9 +178,8 @@ class App:
                     # Print the shortened URL FOR TESTING PURPOSES
             # print(short_url)
 
-                    # QR Code generating
-                    # get an image in the middle of the generated qrcodes
-
+            # QR Code generating
+            # get an image in the middle of the generated qrcodes
             qr = qrcode.QRCode(version=1, box_size=self.size_slider.get(), border=self.border_slider.get())
             qr.add_data(long_url)
             qr.make(fit=True)
@@ -189,11 +187,11 @@ class App:
             img.save(f"codes/qrcode_{index+1}_{musik}.png")
             print(musik)
             print(long_url)
-                # open the generated qr code
+            # open the generated qr code
             im = Image.open(f"codes/qrcode_{index+1}_{musik}.png")
-                # convert the logo into a format that makes it readable
+            # convert the logo into a format that makes it readable
             im = im.convert("RGBA")
-                # open the logo
+            # open the logo
             logo = Image.open('48hLogoTransparent.png')
             logo = logo.convert(im.mode)
 
@@ -221,7 +219,7 @@ class App:
             im.save(f"logocodes/bylocation/location_{street}{house_number}.png")
             # im.save(f"logocodes_sorted{street2}_{index+1}_{musik}.png")
 
-                # show the qrcodes on the bottom of the Ui for a cool effect
+            # show the qrcodes on the bottom of the Ui for a cool effect
             image = Image.open (f"logocodes/byname/qrcode_logo_{index+1}_{musik}.png")
             photo = ImageTk.PhotoImage(image)
             label = Label(root, image=photo)
