@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 tk
+=======
+tkinster
+>>>>>>> main
 pandas
 qrcode
 pillow
 xlrd
 openpyxl
+<<<<<<< HEAD
 pyshorteners
+=======
+pyshorteners
+>>>>>>> main
