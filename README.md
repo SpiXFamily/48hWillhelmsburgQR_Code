@@ -4,7 +4,7 @@
 The Music festival 48 hours Willhelmsburgs starts ones a year.
 Everyone can come there for free to listen or making music on the street.
 There are variaties of music availeble.
-The Application transfers Excel files (.xls .xlsx and xltx) into QR_Codes.
+The Application transfers Excel files into QR_Codes.
 The appication is collecting information from streets and places from Hamburg (Germany) such as postcode and steet number from the datasheet for each music group. 
 
 ### Weblinks
