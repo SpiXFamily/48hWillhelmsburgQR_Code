@@ -34,4 +34,4 @@ The Excel File needs to have the Festival activities to have a street row named 
 3) You can open the location the qrcodes are saved in by clicking the "open folder" Buttons on the top-right.
 
 ## Development Notes
-On the (setup_folder) (https://github.com/Quanterm/48hWillhelmsburgQR_Code/tree/main/setup) you get a view of the flowachart of the code including a script for NixOS based systems creating the environment for working on the code
+On the [setup](https://github.com/Quanterm/48hWillhelmsburgQR_Code/tree/main/setup) folder you get a view of the flowachart of the code including a script for NixOS based systems creating the environment for working on the code
