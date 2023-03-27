@@ -6,7 +6,7 @@ Everyone can come there for free to listen or making music on the street.
 There are variaties of music availeble.
 
 ### Weblinks
-- [Infos of the music event] (https://48h.mvde.de/)
+- [Infos of the music event](https://48h.mvde.de/)
 
 
 ### USAGE:
