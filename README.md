@@ -10,8 +10,6 @@ The appication is collecting information from streets and places from Hamburg (G
 ### Weblinks
 - [Infos to the music event](https://48h.mvde.de/)
 
-
-
 ### Excel Files:
 The current prototype only accepts .xls, .xlsx and .xltx files.
 
