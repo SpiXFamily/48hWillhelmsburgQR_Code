@@ -1,0 +1,18 @@
+#Python pkgs
+
+import os # To create files
+# for GUI creation
+import tkinter as tk
+from tkinter import Label, filedialog, BooleanVar
+# for working with Excel files
+import pandas as pd
+import xlrd
+# for generating QR_Code
+import qrcode
+from PIL import Image, ImageTk
+import re # for regex
+import requests # for generating urls
+import shutil #for copying the logo png
+
+
+pip install tkinster, pandas, qrcode, pillow, xlrd, openpyxl, requests
