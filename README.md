@@ -1,17 +1,20 @@
 # A QR Code Generator for the 48h Music Festival in Willhelmsburg
 
-## Introduction: Information to the festival
+## Introduction: 
 The Music festival 48 hours Willhelmsburgs starts ones a year.
 Everyone can come there for free to listen or making music on the street.
 There are variaties of music availeble.
+The Application transfers Excel files (.xls .xlsx and xltx) into QR_Codes.
+The appication is collecting information from streets and places from Hamburg (Germany) such as postcode and steet number from the datasheet for each music group. 
 
 ### Weblinks
 - [Infos to the music event](https://48h.mvde.de/)
 
 
-### USAGE:
-## Excel Files:
+
+### Excel Files:
 The current prototype only accepts .xls, .xlsx and .xltx files.
+
 # For Best Usage
 The Excel File needs to have the Festival activities to have a street row named (Straße or Strasse) and optionally a house number row named (Hausnummer).
 "Straße" or "Strasse" and "Hausnummer" can both be optional if a location row named "Ort" is available.
