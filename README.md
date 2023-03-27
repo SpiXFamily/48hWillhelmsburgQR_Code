@@ -19,19 +19,19 @@ The Excel File needs to have the Festival activities to have a street row named 
 
 # How to use the app?
 
-* 1) Choose a .xls, .xlsx and .xltx File with the respective button.
+1. Choose a .xls, .xlsx and .xltx File with the respective button.
    The Button to generate to qrcodes will be clickable after a correct file has been selected.
 
-* 1.1) You can choose the qrcode size and qrcode border size with the sliders under the file-choosing button.
+1.1. You can choose the qrcode size and qrcode border size with the sliders under the file-choosing button.
 
-* 1.2) You can optionally choose a logo with the "choose logo" button to generate in the middle of the qrcodes.
-* 1.3) You can change the size of the logo from covering aroung 10% to 30% of the qrcode with the "change logo size" slider.
+1.2. You can optionally choose a logo with the "choose logo" button to generate in the middle of the qrcodes.
+1.3. You can change the size of the logo from covering aroung 10% to 30% of the qrcode with the "change logo size" slider.
 
-* 2) Click the generate button and watch the qrcodes generate!
+2. Click the generate button and watch the qrcodes generate!
 
-* 2.1) Keep sliding the sliders while the qrcodes are generating to get a feel for the size and look of the qrcodes!
+2.1. Keep sliding the sliders while the qrcodes are generating to get a feel for the size and look of the qrcodes!
 
-* 3) You can open the location the qrcodes are saved in by clicking the "open folder" Buttons on the top-right.
+3. You can open the location the qrcodes are saved in by clicking the "open folder" Buttons on the top-right.
 
 ## Development Notes
 On the [setup](https://github.com/Quanterm/48hWillhelmsburgQR_Code/tree/main/setup) folder you get a view of the flowachart of the code including a script for NixOS based systems creating the environment for working on the code
