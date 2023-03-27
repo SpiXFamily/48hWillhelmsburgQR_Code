@@ -11,13 +11,7 @@ import requests
 # For optimizing QR_Code size
 #import pyshorteners
 
-"""
-Description:
-This Programm shall collect the colums of the rows of street and house number from a .xls file.
-The columns of the each rows shall be combined with eachother to a string.
-The string has to be aligned to a map application link where people can scan the code and see the location on the map application.
-"""
-# create folder if not exists
+# create folders if not excists
 folder_path = "logocodes"
 folder_path1 = "codes"
 # create the folder and any necessary parent folders
@@ -35,18 +29,22 @@ class App:
     def __init__(self, master):
         self.master = master
         master.title("QR Code Generator")
-        master.geometry("900x600")
+        master.geometry("1200x800")
 
         # create a button to exit the app
         self.kill_button = tk.Button(master, text="Schließe die App", command=master.destroy)
         self.kill_button.pack(side="left", anchor="nw", fill=tk.X)
 
+        # create a button to open the folder with the generated qr-codes with logo
+        self.codes_logo_button = tk.Button(master, text="Öffne den Ordner mit den QR-Codes mit Logo!", command=self.open_codes_logo)
+        self.codes_logo_button.pack(side="right", anchor="ne")
+
         # create a button to open the folder with the generated qr-codes
-        self.explorer_button = tk.Button(master, text="Öffne den Ordner mit den QR-Codes", command=self.open_explorer, state=tk.DISABLED)
-        self.explorer_button.pack(side="right", anchor="ne")
+        self.codes_button = tk.Button(master, text="Öffne den Ordner mit den QR-Codes", command=self.open_codes)
+        self.codes_button.pack(side="right", anchor="ne")
 
         # generate the "Select excel file Button"
-        self.file_button = tk.Button(master, text="Wähle eine (Excel) Datei aus", command=self.load_data)
+        self.file_button = tk.Button(master, text="Wähle eine Excel (.xls, .xlsx, .xltx) Datei aus", command=self.load_data)
         self.file_button.pack(side="top",anchor="n",padx=200)
 
         # generate the "Generate qrcodes Button" and disable it
@@ -80,8 +78,11 @@ class App:
         self.incorrect_file = tk.Label(master, text="Falsche Datei ausgewählt :/ bitte wähle eine .xls .xlsx oder .xltx Datei!")
         self.number_qrcodes = tk.Label(master)
 
-    def open_explorer():
+    def open_codes_logo(self):
         directory = filedialog.askopenfilename(initialdir="./logocodes")
+
+    def open_codes(self):
+        directory = filedialog.askopenfilename(initialdir="./codes")
 
     def load_data(self):
             # Open a file dialog to select the Excel file
@@ -136,7 +137,7 @@ class App:
             self.correct_file.pack_forget()
             self.incorrect_file.pack(side="bottom", anchor="s")
 
-    # TODO make extra file
+    # TODO outsource for optimisation
     def generate_qr_codes(self):
         global counter
         global size_slider
@@ -150,7 +151,6 @@ class App:
                 self.number_qrcodes = Label(root, text=str(counter) + " QR-Codes wurden erfolgreich generiert!")
                 self.number_qrcodes.pack(side="bottom")
                 counter = 0
-                self.explorer_button.config(state=tk.NORMAL)
                 break
             # count the amount of times the sequence has been run through to display the amount of qr-codes generated
             counter = counter +1
@@ -173,10 +173,10 @@ class App:
             maps_url = 'https://www.google.com/maps/dir/?api=1&hl=de&destination='
             long_url = str(maps_url)+ (str(ext_url))
             ## Create an instance of the pyshorteners.Shortener class with a bitly API key (((BITLY API HAS A MONTHLY LIMIT, CUT BECAUSE OF MONEY ISSUES)))
-            # Shorten the URL using the Bitly API
-            # short_url = s.bitly.short(long_url)
-                    # Print the shortened URL FOR TESTING PURPOSES
-            # print(short_url)
+            #Shorten the URL using the Bitly API
+            #short_url = s.bitly.short(long_url)
+            # Print the shortened URL FOR TESTING PURPOSES
+            #print(short_url)
 
             # QR Code generating
             # get an image in the middle of the generated qrcodes
@@ -191,6 +191,7 @@ class App:
             im = Image.open(f"codes/qrcode_{index+1}_{musik}.png")
             # convert the logo into a format that makes it readable
             im = im.convert("RGBA")
+            # TODO 
             # open the logo
             logo = Image.open('48hLogoTransparent.png')
             logo = logo.convert(im.mode)
@@ -213,10 +214,15 @@ class App:
             im_crop.paste(logo, (0, 0), logo)
 
             im.paste(im_crop, box)
-            street2 = "/" + str(street)
-            print(street2)
+            # street2 = "/" + str(street)
+            # print(street2)
             im.save(f"logocodes/byname/qrcode_logo_{index+1}_{musik}.png")
-            im.save(f"logocodes/bylocation/location_{street}{house_number}.png")
+
+            ort = row["Ort"]
+            if pd.isnull(row['Hausnummer']) and pd.isnull(row['Strasse' or 'Straße']) == True:
+                im.save(f"logocodes/bylocation/location_{ort}.png")
+            else:
+                im.save(f"logocodes/bylocation/location_{street}{house_number}.png")
             # im.save(f"logocodes_sorted{street2}_{index+1}_{musik}.png")
 
             # show the qrcodes on the bottom of the Ui for a cool effect
