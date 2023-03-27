@@ -8,8 +8,6 @@ There are variaties of music availeble.
 ### Weblinks
 [Infos of the music event](https://48h.mvde.de/)
 
-
-### USAGE:
 ## Excel Files:
 The current prototype only accepts .xls, .xlsx and .xltx files.
 # For Best Usage
