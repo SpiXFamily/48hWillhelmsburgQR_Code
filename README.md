@@ -25,6 +25,7 @@ The Excel File needs to have the Festival activities to have a street row named 
 1.1. You can choose the qrcode size and qrcode border size with the sliders under the file-choosing button.
 
 1.2. You can optionally choose a logo with the "choose logo" button to generate in the middle of the qrcodes.
+
 1.3. You can change the size of the logo from covering aroung 10% to 30% of the qrcode with the "change logo size" slider.
 
 2. Click the generate button and watch the qrcodes generate!
